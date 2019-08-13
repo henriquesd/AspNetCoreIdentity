@@ -24,6 +24,15 @@ namespace AspNetCoreIdentity.Controllers
             return View();
         }
 
+        // Autorização significa que além de estar autenticado, o usuário tem que poder fazer aquilo que ele está tentando fazer.
+        // Autorização vem um nível depois da autenticação.
+        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Gestor")]
+        public IActionResult Secret()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
