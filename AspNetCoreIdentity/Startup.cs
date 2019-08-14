@@ -1,4 +1,6 @@
 ﻿using AspNetCoreIdentity.Config;
+using KissLog.Apis.v1.Listeners;
+using KissLog.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +55,8 @@ namespace AspNetCoreIdentity
                 app.UseHsts();
             }
 
+            app.UseKissLogMiddleware();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -63,6 +67,8 @@ namespace AspNetCoreIdentity
             {
                 routes.MapRoute("default","{controller=Home}/{action=Index}/{id?}");
             });
+
+            LogConfig.RegisterKissLogListeners(Configuration);
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using static AspNetCoreIdentity.Extensions.CustomAuthorization;
 using AspNetCoreIdentity.Extensions;
 using System;
+using KissLog;
 
 namespace AspNetCoreIdentity.Controllers
 {
@@ -15,9 +16,18 @@ namespace AspNetCoreIdentity.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly ILogger _logger;
+
+        public HomeController(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         [AllowAnonymous]
         public IActionResult Index()
         {
+            _logger.Trace("Usuario acessou a home!");
+
             return View();
         }
 
@@ -35,6 +45,16 @@ namespace AspNetCoreIdentity.Controllers
         [Authorize(Roles = "Admin, Gestor")]
         public IActionResult Secret()
         {
+            try
+            {
+                throw new Exception("Algo horrivel ocorreu!");
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e);
+                throw;
+            }
+
             return View();
         }
 
