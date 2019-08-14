@@ -1,4 +1,5 @@
 ﻿using AspNetCoreIdentity.Config;
+using AspNetCoreIdentity.Extensions;
 using KissLog.Apis.v1.Listeners;
 using KissLog.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -39,7 +40,11 @@ namespace AspNetCoreIdentity
 
             services.ResolveDependencies();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => 
+            {
+                //options.Filters.Add(new AuditoriaFilter()); // como ele tem injeção de depenência, não da para usar assim - se não tivesse, poderia usar desta maneira;
+                options.Filters.Add(typeof(AuditoriaFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
